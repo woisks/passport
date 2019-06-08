@@ -49,6 +49,17 @@ class PassportService
         $this->accountTypeRepo = $accountTypeRepository;
     }
 
+    /**
+     * usernameExists 2019/6/8 9:22
+     *
+     * @param string $username
+     *
+     * @return bool
+     */
+    public function usernameExists(string $username): bool
+    {
+        return $this->passportRepo->usernameExists($username);
+    }
 
     /**
      * add 2019/5/14 15:40
@@ -153,15 +164,42 @@ class PassportService
             : res(500, 'Come back later');
     }
 
+
     /**
-     * get 2019/6/7 20:41
+     * get 2019/6/8 9:42
      *
      *
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function get()
+    public function get(): JsonResponse
     {
-        return $this->passportRepo->uidGet(JwtService::jwt_token_info()['ide']);
+        $db = $this->passportRepo->uidGet(JwtService::jwt_token_info()['ide'])->filter(function ($value) {
+            if ($value->account_type == 'phone') {
+                return $value->username = substr($value->username, 0, 3) . str_repeat('*', 6) . substr($value->username, -1 - 1);
+            }
+
+            if ($value->account_type == 'email') {
+
+                $str = \Str::before($value->username, '@');
+
+                return $value->username = substr($str, 0, 3) . str_repeat('*', strlen($str) - 3) . '@' . \Str::after($value->username, '@');
+            }
+
+            return $value->username;
+        });
+
+        $data = [];
+        foreach ($db as $item) {
+
+            if ($item->account_type == 'phone' || $item->account_type == 'email') {
+                $data['bind'][] = $item;
+            }
+            if ($item->account_type == 'numeric' || $item->account_type == 'username') {
+                $data['alias'][] = $item;
+            }
+        }
+
+        return res(200, 'success', $data);
     }
 
 }

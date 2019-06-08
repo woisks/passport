@@ -37,12 +37,12 @@ class PassportController extends BaseController
     }
 
     /**
-     * get 2019/6/7 20:41
+     * get 2019/6/8 9:42
      *
      *
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function get()
+    public function get(): JsonResponse
     {
         return $this->passportService->get();
     }
@@ -57,6 +57,9 @@ class PassportController extends BaseController
     public function add(UsernameRequest $request): JsonResponse
     {
         $username = $request->input('username');
+        if ($this->passportService->usernameExists($username)) {
+            return res(422, 'username exists');
+        }
 
         return $this->passportService->add($username);
     }
@@ -73,6 +76,9 @@ class PassportController extends BaseController
     {
         $username = $request->input('username');
 
+        if (!$this->passportService->usernameExists($username)) {
+            return res(404, 'username not exists');
+        }
         return $this->passportService->del($username);
     }
 
@@ -88,6 +94,9 @@ class PassportController extends BaseController
     {
         $username = $request->input('username');
 
+        if ($this->passportService->usernameExists($username)) {
+            return res(422, 'username exists');
+        }
         return $this->passportService->bind($username);
     }
 
@@ -101,7 +110,9 @@ class PassportController extends BaseController
     public function update(UsernameRequest $request)
     {
         $username = $request->input('username');
-
+        if (!$this->passportService->usernameExists($username)) {
+            return res(422, 'username exists');
+        }
         return $this->passportService->update($username);
     }
 

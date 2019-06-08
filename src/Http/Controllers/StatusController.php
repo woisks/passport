@@ -87,7 +87,7 @@ class StatusController extends BaseController
         }
 
         if (!Arr::has(array_flip($macs), $mac)) {
-            return res(404, 'mac not exists');
+            return res(404, 'passport mac not exists');
         }
 
         $del = \Redis::del('token:' . $info['ide'] . ':' . $mac);
