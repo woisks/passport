@@ -5,13 +5,13 @@ namespace Woisks\Passport\Models\Entity;
 
 
 /**
- * Class TypeCount
+ * Class TypeCountEntity
  *
- * @package Woisks\Passport\Models\Entity
+ * @package Woisks\PassportEntity\Models\Entity
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:47
  */
-class TypeCount extends Models
+class TypeCountEntity extends Models
 {
 
 
@@ -30,7 +30,7 @@ class TypeCount extends Models
      */
     protected $fillable = [
         'id',
-        'alias',
+        'type',
         'name',
         'readme',
         'count',

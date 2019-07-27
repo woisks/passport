@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller;
 /**
  * Class BaseController
  *
- * @package Woisks\Passport\Http\Controllers
+ * @package Woisks\PassportEntity\Http\Controllers
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:43
  */

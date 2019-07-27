@@ -10,7 +10,7 @@ use Exception;
 /**
  * Class FreezeAccountException
  *
- * @package Woisks\Passport\Exceptions
+ * @package Woisks\PassportEntity\Exceptions
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:43
  */

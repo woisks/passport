@@ -1,5 +1,11 @@
-## status code 
+##rely on packages
 
+user
+jwt
+redis
+agent
+
+## account status code
 
 2003 Account Freeze
 
@@ -7,9 +13,15 @@
 
 2001 Too many errors, lock 30 minutes
 
+------------------------------------------
+
+## token status code
+
 1001 param error lack token 
 
-500 Come back later
+------------------------------------------
+
+## passport status code
 
 422 param error or not proper
 

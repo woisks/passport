@@ -5,37 +5,39 @@ declare(strict_types=1);
 namespace Woisks\Passport\Http\Controllers;
 
 
-use Illuminate\Http\JsonResponse;
+use Hash;
+use Woisks\Jwt\Services\JwtService;
 use Woisks\Passport\Http\Requests\ResetPasswordRequest;
 use Woisks\Passport\Http\Requests\UpdatePasswordRequest;
-use Woisks\Passport\Models\Services\PasswordService;
+use Woisks\Passport\Models\Repository\AccountRepository;
+use Woisks\Passport\Models\Repository\PassportRepository;
 
 /**
  * Class PasswordController
  *
- * @package Woisks\Passport\Http\Controllers
+ * @package Woisks\PassportEntity\Http\Controllers
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/17 19:55
  */
 class PasswordController extends BaseController
 {
     /**
-     * passwordService  2019/5/17 19:55
+     * accountRepo  2019/5/17 19:54
      *
-     * @var  \Woisks\Passport\Models\Services\PasswordService
+     * @var  \Woisks\Passport\Models\Repository\AccountRepository
      */
-    public $passwordService;
-
+    public $accountRepo;
     /**
-     * PasswordController constructor. 2019/5/17 19:56
+     * passportRepo  2019/6/7 22:15
      *
-     * @param \Woisks\Passport\Models\Services\PasswordService $passwordService
-     *
-     * @return void
+     * @var  \Woisks\Passport\Models\Repository\PassportRepository
      */
-    public function __construct(PasswordService $passwordService)
+    public $passportRepo;
+
+    public function __construct(AccountRepository $accountRepository, PassportRepository $passportRepository)
     {
-        $this->passwordService = $passwordService;
+        $this->accountRepo = $accountRepository;
+        $this->passportRepo = $passportRepository;
     }
 
     /**
@@ -50,7 +52,24 @@ class PasswordController extends BaseController
         $old_password = $request->input('old_password');
         $new_password = $request->input('password');
 
-        return $this->passwordService->update($old_password, $new_password);
+        $info = JwtService::jwt_token_info();
+        $account = $this->accountRepo->uidFind($info['ide']);
+
+        if ($old_password == $new_password) {
+            return res(422, 'new password not cant old password equal');
+        }
+
+        $bool = Hash::check($old_password, $account->password);
+
+        if ($bool) {
+            $account->update(['password' => bcrypt($new_password)]);
+
+            $this->offline_all($info['ide']);
+
+            return res(200, 'password update success');
+        }
+
+        return res(401, 'old password error');
     }
 
     /**
@@ -60,12 +79,34 @@ class PasswordController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function reset(ResetPasswordRequest $request): JsonResponse
+    public function reset(ResetPasswordRequest $request)
     {
         $username = $request->input('username');
         $password = $request->input('password');
 
-        return $this->passwordService->reset($username, $password);
+        $passport = $this->passportRepo->usernameFirst($username);
+        $account = $this->accountRepo->uidFind($passport->account_uid);
+        $bool = $account->update(['password' => bcrypt($password)]);
+        $this->offline_all($passport->account_uid);
+
+        return $bool ? res(200, 'password reset success') : res(500, 'Come back later');
+    }
+
+
+    /**
+     * offline_all 2019/6/7 22:36
+     *
+     * @param int $uid
+     *
+     * @return void
+     */
+    private function offline_all(int $uid): void
+    {
+        $collect = \Redis::keys('token:' . $uid . '*');
+        $prefix = config('database.redis.options.prefix');
+        foreach ($collect as $item) {
+            \Redis::del(preg_replace("/$prefix/", "", $item));
+        }
     }
 
 }

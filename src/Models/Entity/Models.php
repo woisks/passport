@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Model
  *
- * @package Woisks\Passport\Models\Entity
+ * @package Woisks\PassportEntity\Models\Entity
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:48
  */

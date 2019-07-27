@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace Woisks\Passport\Models\Entity;
 
-
 /**
- * Class LoginFailLog
+ * Class LoginLogEntity
  *
- * @package Woisks\Passport\Models\Entity
+ * @package Woisks\PassportEntity\Models\Entity
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:47
  */
-class LoginFailLog extends Models
+class LoginLogEntity extends Models
 {
 
 
@@ -20,7 +19,7 @@ class LoginFailLog extends Models
      *
      * @var string
      */
-    protected $table = 'passport_log_login_fail';
+    protected $table = 'passport_log_login';
 
 
     /**
@@ -38,10 +37,13 @@ class LoginFailLog extends Models
         'brand_model',
         'device_type'
     ];
+    protected $hidden=[
+        'id',
+        'account_uid'
+    ];
 
- 
     /**
      *
      */
-    const UPDATED_AT = null;
+    public const UPDATED_AT = null;
 }

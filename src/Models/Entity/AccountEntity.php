@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Woisks\Passport\Models\Entity;
 
 /**
- * Class Account
+ * Class AccountEntity
  *
  * @property mixed limit_login_time
  * @property mixed login_error_count
@@ -12,11 +12,11 @@ namespace Woisks\Passport\Models\Entity;
  * @property mixed status
  * @property mixed last_login_account_type
  * @property mixed sum_login_count
- * @package Woisks\Passport\Models\Entity
+ * @package Woisks\PassportEntity\Models\Entity
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:46
  */
-class Account extends Models
+class AccountEntity extends Models
 {
 
 

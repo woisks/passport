@@ -6,7 +6,7 @@ namespace Woisks\Passport\Http\Requests;
 /**
  * Class LoginRequest
  *
- * @package Woisks\Passport\Http\Requests
+ * @package Woisks\PassportEntity\Http\Requests
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:45
  */

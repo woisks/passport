@@ -11,7 +11,7 @@ use Woisks\Passport\Listeners\PassportLogListener;
 /**
  * Class EventServiceProvider
  *
- * @package Woisks\Passport\Providers
+ * @package Woisks\PassportEntity\Providers
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 12:15
  */

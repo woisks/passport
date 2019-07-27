@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Woisks\Passport\Models\Repository;
 
-use Woisks\Passport\Models\Entity\Passport;
+use Woisks\Passport\Models\Entity\PassportEntity;
 
 
 /**
  * Class PassportRepository
  *
- * @package Woisks\Passport\Models\Repository
+ * @package Woisks\PassportEntity\Models\Repository
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 12:01
  */
@@ -18,7 +18,7 @@ class PassportRepository
     /**
      * model  2019/5/10 12:01
      *
-     * @var static \Woisks\Passport\Models\Entity\Passport
+     * @var static \Woisks\PassportEntity\Models\Entity\PassportEntity
      */
     private static $model;
 
@@ -26,39 +26,39 @@ class PassportRepository
     /**
      * PassportRepository constructor. 2019/5/14 10:29
      *
-     * @param \Woisks\Passport\Models\Entity\Passport $passport
+     * @param \Woisks\Passport\Models\Entity\PassportEntity $passport
      * @return void
      */
-    public function __construct(Passport $passport)
+    public function __construct(PassportEntity $passport)
     {
         self::$model = $passport;
     }
 
 
     /**
-     * usernameExists 2019/5/10 12:01
+     * usernameExists. 2019/7/26 23:05.
      *
-     * @param string $username
+     * @param $username
      *
-     * @return bool
+     * @return mixed
      */
-    public function usernameExists(string $username): bool
+    public function usernameExists($username)
     {
         return self::$model->where('username', $username)->exists();
     }
 
 
     /**
-     * created 2019/6/6 16:23
+     * created. 2019/7/26 23:05.
      *
-     * @param int    $uid
-     * @param string $username
-     * @param string $account_type
+     * @param        $uid
+     * @param        $username
+     * @param        $account_type
      * @param string $password
      *
-     * @return \Woisks\Passport\Models\Entity\Passport
+     * @return mixed
      */
-    public function created(int $uid, string $username, string $account_type, string $password = ''): Passport
+    public function created($uid, $username, $account_type, $password = '')
     {
         return self::$model->create([
             'id'           => create_numeric_id(),
@@ -71,57 +71,58 @@ class PassportRepository
 
 
     /**
-     * uidTypeExists 2019/5/14 15:36
+     * uidTypeExists. 2019/7/26 23:05.
      *
-     * @param int    $uid
-     * @param string $account_type
+     * @param $uid
+     * @param $account_type
      *
-     * @return bool
+     * @return mixed
      */
-    public function uidTypeExists(int $uid, string $account_type): bool
+    public function uidTypeExists($uid, $account_type)
     {
         return self::$model->where('account_uid', $uid)->where('account_type', $account_type)->exists();
     }
 
 
     /**
-     * usernameFirst 2019/6/6 16:29
+     * usernameFirst. 2019/7/26 23:05.
      *
      * @param string $username
      *
-     * @return null|\Woisks\Passport\Models\Entity\Passport
+     * @return mixed
      */
-    public function usernameFirst(string $username): ?Passport
+    public function usernameFirst(string $username)
     {
         return self::$model->where('username', $username)->first();
     }
 
 
     /**
-     * updated 2019/5/16 10:41
+     * updated. 2019/7/26 23:05.
      *
-     * @param int    $uid
-     * @param string $account_type
-     * @param string $username
+     * @param $uid
+     * @param $account_type
+     * @param $username
      *
-     * @return int
+     * @return mixed
      */
-    public function updated(int $uid, string $account_type, string $username): int
+    public function updated($uid, $account_type, $username)
     {
         return self::$model->where('account_uid', $uid)
                            ->where('account_type', $account_type)
                            ->update(['username' => $username]);
     }
 
+
     /**
-     * uidGet 2019/6/7 20:39
+     * uidGet. 2019/7/26 23:05.
      *
-     * @param int $uid
+     * @param $uid
      *
      * @return mixed
      */
-    public function uidGet(int $uid)
+    public function uidGet($uid)
     {
-        return self::$model->where('account_uid',$uid)->get();
+        return self::$model->where('account_uid', $uid)->get();
     }
 }

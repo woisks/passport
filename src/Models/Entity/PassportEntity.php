@@ -5,16 +5,16 @@ namespace Woisks\Passport\Models\Entity;
 
 
 /**
- * Class Passport
+ * Class PassportEntity
  *
  * @property mixed account_uid
  * @property mixed account_type
  * @property mixed login_count
- * @package Woisks\Passport\Models\Entity
+ * @package Woisks\PassportEntity\Models\Entity
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:48
  */
-class Passport extends Models
+class PassportEntity extends Models
 {
 
 

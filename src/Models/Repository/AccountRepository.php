@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Woisks\Passport\Models\Repository;
 
 use Carbon\Carbon;
-use Woisks\Passport\Models\Entity\Account;
+use Woisks\Passport\Models\Entity\AccountEntity;
 
 
 /**
  * Class AccountRepository
  *
- * @package Woisks\Passport\Models\Repository
+ * @package Woisks\PassportEntity\Models\Repository
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/21 19:02
  */
@@ -21,7 +21,7 @@ class AccountRepository
     /**
      * model  2019/5/21 19:02
      *
-     * @var static \Woisks\Passport\Models\Entity\Account
+     * @var static \Woisks\PassportEntity\Models\Entity\AccountEntity
      */
     private static $model;
 
@@ -29,24 +29,24 @@ class AccountRepository
     /**
      * AccountRepository constructor. 2019/5/14 10:28
      *
-     * @param \Woisks\Passport\Models\Entity\Account $account
+     * @param \Woisks\Passport\Models\Entity\AccountEntity $account
      * @return void
      */
-    public function __construct(Account $account)
+    public function __construct(AccountEntity $account)
     {
         self::$model = $account;
     }
 
 
     /**
-     * initAccount 2019/6/6 16:31
+     * initAccount. 2019/7/26 22:59.
      *
-     * @param int    $uid
-     * @param string $password
+     * @param $uid
+     * @param $password
      *
-     * @return \Woisks\Passport\Models\Entity\Account
+     * @return mixed
      */
-    public function initAccount(int $uid, string $password): Account
+    public function initAccount($uid, $password)
     {
         return self::$model->create([
             'id'               => $uid,
@@ -57,13 +57,13 @@ class AccountRepository
 
 
     /**
-     * uidFind 2019/6/6 16:34
+     * uidFind. 2019/7/26 23:00.
      *
-     * @param int $uid
+     * @param $uid
      *
-     * @return null|\Woisks\Passport\Models\Entity\Account
+     * @return mixed
      */
-    public function uidFind(int $uid): ?Account
+    public function uidFind($uid)
     {
         return self::$model->find($uid);
     }

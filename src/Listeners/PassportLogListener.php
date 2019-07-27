@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Woisks\Passport\Listeners;
 
 use Woisks\Passport\Events\RegisterEvent;
-use Woisks\Passport\Models\Repository\LoginFailLogRepository;
-use Woisks\Passport\Models\Repository\LoginLogRepository;
-use Woisks\Passport\Models\Repository\RegisterLogRepository;
+use Woisks\Passport\Models\Repository\LogRepository;
 
 
 /**
@@ -19,8 +17,9 @@ use Woisks\Passport\Models\Repository\RegisterLogRepository;
 class PassportLogListener
 {
 
+
     /**
-     * handle 2019/5/10 11:46
+     * handle. 2019/7/26 23:24.
      *
      * @param \Woisks\Passport\Events\RegisterEvent $event
      *
@@ -30,15 +29,17 @@ class PassportLogListener
     public function handle(RegisterEvent $event)
     {
 
+        $logRepo = app()->make(LogRepository::class);
+
         switch ($event->type) {
             case 'register':
-                app()->make(RegisterLogRepository::class)->created($event->logID, $event->uid, $event->account_type);
+                $logRepo->register($event->logID, $event->account_uid, $event->account_type, $event->ip, $event->system, $event->client, $event->brand_model, $event->device_type);
                 break;
             case 'login':
-                app()->make(LoginLogRepository::class)->created($event->logID, $event->uid, $event->account_type);
+                $logRepo->login($event->logID, $event->account_uid, $event->account_type, $event->ip, $event->system, $event->client, $event->brand_model, $event->device_type);
                 break;
             case 'fail':
-                app()->make(LoginFailLogRepository::class)->created($event->logID, $event->uid, $event->account_type);
+                $logRepo->loginFail($event->logID, $event->account_uid, $event->account_type, $event->ip, $event->system, $event->client, $event->brand_model, $event->device_type);
                 break;
             default:
         }

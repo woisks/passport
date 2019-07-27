@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Woisks\Passport\Models\Repository;
 
 
-use Woisks\Passport\Models\Entity\TypeCount;
+use Woisks\Passport\Models\Entity\TypeCountEntity;
 
 
 /**
- * Class TypeCountRepository
+ * Class CountRepository
  *
- * @package Woisks\Passport\Models\Repository
+ * @package Woisks\PassportEntity\Models\Repository
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/21 19:02
  */
@@ -21,19 +21,19 @@ class TypeCountRepository
     /**
      * model  2019/5/21 19:02
      *
-     * @var static \Woisks\Passport\Models\Entity\TypeCount
+     * @var static \Woisks\PassportEntity\Models\Entity\TypeCountEntity
      */
     private static $model;
 
 
     /**
-     * TypeCountRepository constructor. 2019/5/14 10:28
+     * CountRepository constructor. 2019/5/14 10:28
      *
-     * @param \Woisks\Passport\Models\Entity\TypeCount $accountType
+     * @param \Woisks\Passport\Models\Entity\TypeCountEntity $accountType
      *
      * @return void
      */
-    public function __construct(TypeCount $accountType)
+    public function __construct(TypeCountEntity $accountType)
     {
         self::$model = $accountType;
     }
@@ -48,7 +48,7 @@ class TypeCountRepository
      */
     public function typeIncrement(string $account_type): int
     {
-        return self::$model->where('alias', $account_type)->increment('count');
+        return self::$model->where('type', $account_type)->increment('count');
     }
 
 
@@ -61,6 +61,6 @@ class TypeCountRepository
      */
     public function typeDecrement(string $account_type): int
     {
-        return self::$model->where('alias', $account_type)->decrement('count');
+        return self::$model->where('type', $account_type)->decrement('count');
     }
 }

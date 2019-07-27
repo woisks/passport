@@ -10,7 +10,7 @@ use Woisks\Jwt\Services\JwtService;
 /**
  * Class LogoutController
  *
- * @package Woisks\Passport\Http\Controllers
+ * @package Woisks\PassportEntity\Http\Controllers
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/17 17:57
  */

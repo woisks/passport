@@ -16,12 +16,12 @@ namespace Woisks\Passport\Http\Controllers;
 use Arr;
 use Woisks\Jwt\Services\JwtService;
 use Woisks\Passport\Http\Requests\OfflineRequest;
-use Woisks\Passport\Models\Entity\LoginLog;
+use Woisks\Passport\Models\Entity\LoginLogEntity;
 
 /**
  * Class StatusController
  *
- * @package Woisks\Passport\Http\Controllers
+ * @package Woisks\PassportEntity\Http\Controllers
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/6/8 0:56
  */
@@ -49,7 +49,7 @@ class StatusController extends BaseController
             $log_id[] = \Redis::get(preg_replace("/$prefix/", "", $item));
         }
 
-        $db = LoginLog::find($log_id);
+        $db = LoginLogEntity::find($log_id);
 
         $data = [];
         foreach ($db as $key => $value) {

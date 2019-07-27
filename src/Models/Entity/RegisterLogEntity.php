@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Woisks\Passport\Models\Entity;
 
 /**
- * Class RegisterLog
+ * Class RegisterLogEntity
  *
- * @package Woisks\Passport\Models\Entity
+ * @package Woisks\PassportEntity\Models\Entity
  *
  * @Author  Maple Grove  <bolelin@126.com> 2019/5/10 11:48
  */
-class RegisterLog extends Models
+class RegisterLogEntity extends Models
 {
 
     /**
