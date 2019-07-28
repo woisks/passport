@@ -14,8 +14,8 @@ namespace Woisks\Passport\Http\Controllers;
 
 
 use Arr;
+use Illuminate\Http\JsonResponse;
 use Woisks\Jwt\Services\JwtService;
-use Woisks\Passport\Http\Requests\OfflineRequest;
 use Woisks\Passport\Models\Entity\LoginLogEntity;
 
 /**
@@ -31,21 +31,21 @@ class StatusController extends BaseController
      * online 2019/6/8 0:56
      *
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function online()
     {
-        $info = JwtService::jwt_token_info();
+        $info          = JwtService::jwt_token_info();
         $redis_collect = \Redis::keys('token:' . $info['ide'] . '*');
 
         $prefix = config('database.redis.options.prefix');
 
         $_mac = $prefix . 'token:' . $info['ide'] . ':';
 
-        $mac = [];
+        $mac    = [];
         $log_id = [];
         foreach ($redis_collect as $item) {
-            $mac[] = preg_replace("/$_mac/", "", $item);
+            $mac[]    = preg_replace("/$_mac/", "", $item);
             $log_id[] = \Redis::get(preg_replace("/$prefix/", "", $item));
         }
 
@@ -65,18 +65,14 @@ class StatusController extends BaseController
 
     }
 
-    /**
-     * offline 2019/6/8 0:56
-     *
-     * @param \Woisks\Passport\Http\Requests\OfflineRequest $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function offline(OfflineRequest $request)
-    {
-        $mac = $request->input('mac');
 
-        $info = JwtService::jwt_token_info();
+    public function offline($mac)
+    {
+        if (strlen($mac) != 10 && strlen($mac) != 11) {
+            return res(422, 'param mac error ');
+        }
+
+        $info          = JwtService::jwt_token_info();
         $redis_collect = \Redis::keys('token:' . $info['ide'] . '*');
 
         $prefix = config('database.redis.options.prefix') . 'token:' . $info['ide'] . ':';

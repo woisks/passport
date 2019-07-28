@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Woisks\Passport\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Woisks\Jwt\Services\JwtService;
 use Woisks\Passport\Http\Requests\UsernameRequest;
 use Woisks\Passport\Models\Repository\PassportRepository;
@@ -18,39 +19,42 @@ use Woisks\Passport\Models\Repository\TypeCountRepository;
  */
 class PassportController extends BaseController
 {
+
     /**
-     * passportRepo.  2019/7/27 2:36.
+     * passportRepo.  2019/7/28 11:49.
      *
-     * @var  \Woisks\Passport\Models\Repository\PassportRepository
+     * @var  PassportRepository
      */
     private $passportRepo;
+
     /**
-     * typeCountRepo.  2019/7/27 2:36.
+     * typeCountRepo.  2019/7/28 11:49.
      *
-     * @var  \Woisks\Passport\Models\Repository\TypeCountRepository
+     * @var  TypeCountRepository
      */
     private $typeCountRepo;
 
 
     /**
-     * PassportController constructor. 2019/7/27 2:37.
+     * PassportController constructor. 2019/7/28 11:49.
      *
-     * @param \Woisks\Passport\Models\Repository\PassportRepository  $passportRepo
-     * @param \Woisks\Passport\Models\Repository\TypeCountRepository $typeCountRepo
+     * @param PassportRepository $passportRepo
+     * @param TypeCountRepository $typeCountRepo
      *
      * @return void
      */
     public function __construct(PassportRepository $passportRepo, TypeCountRepository $typeCountRepo)
     {
         $this->typeCountRepo = $typeCountRepo;
-        $this->passportRepo = $passportRepo;
+        $this->passportRepo  = $passportRepo;
     }
 
+
     /**
-     * get. 2019/7/27 2:36.
+     * get. 2019/7/28 11:49.
      *
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function get()
     {
@@ -85,11 +89,11 @@ class PassportController extends BaseController
 
 
     /**
-     * add. 2019/7/27 2:37.
+     * add. 2019/7/28 11:49.
      *
-     * @param \Woisks\Passport\Http\Requests\UsernameRequest $request
+     * @param UsernameRequest $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function add(UsernameRequest $request)
     {
@@ -98,7 +102,7 @@ class PassportController extends BaseController
             return res(422, 'username exists');
         }
 
-        $info = JwtService::jwt_token_info();
+        $info         = JwtService::jwt_token_info();
         $account_type = account_type($username);
 
         $exists = $this->passportRepo->uidTypeExists($info['ide'], $account_type);
@@ -112,12 +116,13 @@ class PassportController extends BaseController
         return res(200, 'success');
     }
 
+
     /**
-     * del. 2019/7/27 2:37.
+     * del. 2019/7/28 11:49.
      *
-     * @param \Woisks\Passport\Http\Requests\UsernameRequest $request
+     * @param UsernameRequest $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function del(UsernameRequest $request)
     {
@@ -127,7 +132,7 @@ class PassportController extends BaseController
             return res(404, 'username not exists');
         }
 
-        $info = JwtService::jwt_token_info();
+        $info         = JwtService::jwt_token_info();
         $account_type = account_type($username);
 
         $passport = $this->passportRepo->usernameFirst($username);
@@ -148,11 +153,11 @@ class PassportController extends BaseController
 
 
     /**
-     * bind 2019/6/7 20:33
+     * bind. 2019/7/28 11:49.
      *
-     * @param \Woisks\Passport\Http\Requests\UsernameRequest $request
+     * @param UsernameRequest $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function bind(UsernameRequest $request)
     {
@@ -162,7 +167,7 @@ class PassportController extends BaseController
             return res(422, 'username exists');
         }
 
-        $info = JwtService::jwt_token_info();
+        $info         = JwtService::jwt_token_info();
         $account_type = account_type($username);
 
         $exists = $this->passportRepo->uidTypeExists($info['ide'], $account_type);
@@ -177,12 +182,13 @@ class PassportController extends BaseController
         return res(200, 'success');
     }
 
+
     /**
-     * update 2019/6/7 20:33
+     * update. 2019/7/28 11:49.
      *
-     * @param \Woisks\Passport\Http\Requests\UsernameRequest $request
+     * @param UsernameRequest $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(UsernameRequest $request)
     {
@@ -191,7 +197,7 @@ class PassportController extends BaseController
             return res(422, 'username exists');
         }
 
-        $info = JwtService::jwt_token_info();
+        $info         = JwtService::jwt_token_info();
         $account_type = account_type($username);
 
         $exists = $this->passportRepo->uidTypeExists($info['ide'], $account_type);

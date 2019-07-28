@@ -8,7 +8,7 @@ use Woisks\Passport\Models\Entity\TypeCountEntity;
 
 
 /**
- * Class CountRepository
+ * Class TypeRepository
  *
  * @package Woisks\PassportEntity\Models\Repository
  *
@@ -27,7 +27,7 @@ class TypeCountRepository
 
 
     /**
-     * CountRepository constructor. 2019/5/14 10:28
+     * TypeRepository constructor. 2019/5/14 10:28
      *
      * @param \Woisks\Passport\Models\Entity\TypeCountEntity $accountType
      *

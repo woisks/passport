@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Woisks\Passport\Http\Controllers;
 
 
+use Illuminate\Http\JsonResponse;
 use Woisks\Jwt\Services\JwtService;
 
 /**
@@ -20,7 +21,7 @@ class LogoutController extends BaseController
      * logout 2019/5/17 17:57
      *
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function logout()
     {

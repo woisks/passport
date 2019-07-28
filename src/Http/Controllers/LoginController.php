@@ -8,6 +8,7 @@ namespace Woisks\Passport\Http\Controllers;
 use Carbon\Carbon;
 use DB;
 use Hash;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 use Woisks\Agent\AgentService;
 use Woisks\Jwt\JWT;
@@ -33,49 +34,52 @@ use Woisks\Passport\Models\Repository\PassportRepository;
 class LoginController extends BaseController
 {
 
+
     /**
-     * passportRepo.  2019/7/27 1:21.
+     * passportRepo.  2019/7/28 11:47.
      *
-     * @var  \Woisks\Passport\Models\Repository\PassportRepository
+     * @var  PassportRepository
      */
     private $passportRepo;
+
     /**
-     * accountRepo.  2019/7/27 1:21.
+     * accountRepo.  2019/7/28 11:47.
      *
-     * @var  \Woisks\Passport\Models\Repository\AccountRepository
+     * @var  AccountRepository
      */
     private $accountRepo;
+
     /**
-     * logRepo.  2019/7/27 1:26.
+     * logRepo.  2019/7/28 11:47.
      *
-     * @var  \Woisks\Passport\Models\Repository\AccountRepository
+     * @var  LogRepository
      */
     private $logRepo;
 
 
     /**
-     * LoginController constructor. 2019/7/27 1:26.
+     * LoginController constructor. 2019/7/28 11:47.
      *
-     * @param \Woisks\Passport\Models\Repository\PassportRepository $passportRepo
-     * @param \Woisks\Passport\Models\Repository\AccountRepository  $accountRepo
-     * @param \Woisks\Passport\Models\Repository\LogRepository      $logRepo
+     * @param PassportRepository $passportRepo
+     * @param AccountRepository $accountRepo
+     * @param LogRepository $logRepo
      *
      * @return void
      */
     public function __construct(PassportRepository $passportRepo, AccountRepository $accountRepo, LogRepository $logRepo)
     {
-        $this->logRepo = $logRepo;
-        $this->accountRepo = $accountRepo;
+        $this->logRepo      = $logRepo;
+        $this->accountRepo  = $accountRepo;
         $this->passportRepo = $passportRepo;
     }
 
+
     /**
-     * login. 2019/7/27 1:35.
+     * login. 2019/7/28 11:47.
      *
-     * @param \Woisks\Passport\Http\Requests\LoginRequest $request
+     * @param LoginRequest $request
      *
-     * @return null|\Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @return JsonResponse|null
      */
     public function login(LoginRequest $request)
     {
@@ -120,15 +124,15 @@ class LoginController extends BaseController
 
 
     /**
-     * checkPassword. 2019/7/27 1:21.
+     * checkPassword. 2019/7/28 11:47.
      *
      * @param string $password
-     * @param        $account
-     * @param        $passport
+     * @param $account
+     * @param $passport
      *
      * @return void
-     * @throws \Woisks\Passport\Exceptions\LockException
-     * @throws \Woisks\Passport\Exceptions\PasswordErrorException
+     * @throws LockException
+     * @throws PasswordErrorException
      */
     public function checkPassword(string $password, $account, $passport)
     {
@@ -155,11 +159,11 @@ class LoginController extends BaseController
 
 
     /**
-     * checkLimitLoginTime. 2019/7/27 1:21.
+     * checkLimitLoginTime. 2019/7/28 11:47.
      *
      * @param $account
      *
-     * @return null|\Illuminate\Http\JsonResponse
+     * @return JsonResponse|null
      */
     public function checkLimitLoginTime($account)
     {
@@ -178,14 +182,14 @@ class LoginController extends BaseController
 
 
     /**
-     * checkStatus. 2019/7/27 1:21.
+     * checkStatus. 2019/7/28 11:47.
      *
      * @param $account
      * @param $passport
      *
      * @return void
-     * @throws \Woisks\Passport\Exceptions\DisableAccountException
-     * @throws \Woisks\Passport\Exceptions\FreezeAccountException
+     * @throws DisableAccountException
+     * @throws FreezeAccountException
      */
     public function checkStatus($account, $passport)
     {
@@ -200,7 +204,7 @@ class LoginController extends BaseController
             throw new FreezeAccountException('Account Freeze');
         }
 
-        $account->login_error_count = 0;  //清零密码错误次数
+        $account->login_error_count       = 0;  //清零密码错误次数
         $account->last_login_account_type = $passport->account_type;
         $account->sum_login_count++;
         $account->save();
@@ -212,13 +216,14 @@ class LoginController extends BaseController
 
     }
 
+
     /**
-     * loginStatus 2019/5/24 20:33
+     * loginStatus. 2019/7/28 11:47.
      *
      * @param $passport
      * @param $account
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     private function loginStatus($passport, $account)
     {

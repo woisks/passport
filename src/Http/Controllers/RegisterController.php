@@ -6,6 +6,7 @@ namespace Woisks\Passport\Http\Controllers;
 
 use DB;
 use Hash;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 use Woisks\Agent\AgentService;
 use Woisks\Passport\Events\RegisterEvent;
@@ -24,36 +25,37 @@ use Woisks\Passport\Models\Repository\TypeCountRepository;
 class RegisterController extends BaseController
 {
 
+
     /**
-     * accountRepo  2019/5/10 11:28
+     * accountRepo.  2019/7/28 11:41.
      *
-     * @var \Woisks\Passport\Models\Repository\AccountRepository
+     * @var  AccountRepository
      */
     private $accountRepo;
 
 
     /**
-     * passportRepo  2019/5/10 11:28
+     * passportRepo.  2019/7/28 11:41.
      *
-     * @var \Woisks\Passport\Models\Repository\PassportRepository
+     * @var  PassportRepository
      */
     private $passportRepo;
 
 
     /**
-     * accountTypeRepo  2019/5/10 11:52
+     * accountTypeRepo.  2019/7/28 11:41.
      *
-     * @var  \Woisks\Passport\Models\Repository\TypeCountRepository
+     * @var  TypeCountRepository
      */
     private $accountTypeRepo;
 
 
     /**
-     * RegisterService constructor. 2019/5/10 11:28
+     * RegisterController constructor. 2019/7/28 11:41.
      *
-     * @param \Woisks\Passport\Models\Repository\AccountRepository   $accountRepo
-     * @param \Woisks\Passport\Models\Repository\PassportRepository  $passportRepo
-     * @param \Woisks\Passport\Models\Repository\TypeCountRepository $accountTypeRepo
+     * @param AccountRepository $accountRepo
+     * @param PassportRepository $passportRepo
+     * @param TypeCountRepository $accountTypeRepo
      *
      * @return void
      */
@@ -61,12 +63,20 @@ class RegisterController extends BaseController
                                 PassportRepository $passportRepo,
                                 TypeCountRepository $accountTypeRepo)
     {
-        $this->accountRepo = $accountRepo;
-        $this->passportRepo = $passportRepo;
+        $this->accountRepo     = $accountRepo;
+        $this->passportRepo    = $passportRepo;
         $this->accountTypeRepo = $accountTypeRepo;
     }
 
 
+    /**
+     * register. 2019/7/28 11:41.
+     *
+     * @param RegisterRequest $request
+     *
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function register(RegisterRequest $request)
     {
         $username = $request->input('username');
@@ -89,7 +99,7 @@ class RegisterController extends BaseController
      * @param $request
      * @param $username
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws \Exception
      */
     private function services($request, $username)
@@ -97,8 +107,8 @@ class RegisterController extends BaseController
         try {
             DB::beginTransaction();
 
-            $uid = create_numeric_uid();
-            $password = Hash::make($request->input('password'));
+            $uid          = create_numeric_uid();
+            $password     = Hash::make($request->input('password'));
             $account_type = account_type($username);
 
             $this->accountRepo->initAccount($uid, $password);
